@@ -1,0 +1,6 @@
+# Account 1 (work or personal) - the default config
+Host github.com
+   HostName github.com
+   User git
+   IdentityFile ~/.ssh/id_r
+sa
