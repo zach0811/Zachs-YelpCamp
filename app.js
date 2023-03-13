@@ -1,5 +1,5 @@
-if (process.env.NODE_ENV !=="production") {
-  require('dotenv').config()
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
 const express = require("express");
@@ -13,13 +13,13 @@ const methodOverride = require("method-override");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
-const helmet = require('helmet');
-const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
 const userRoutes = require("./routes/users");
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
 const req = require("express/lib/request");
-const MongoStore = require('connect-mongo');
+const MongoStore = require("connect-mongo");
 
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
 
@@ -45,9 +45,11 @@ app.set("views", path.join(__dirname, "views")); //middleware to set up view eng
 app.use(express.urlencoded({ extended: true })); //middleware
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
-app.use(mongoSanitize({
-  replaceWith: '_'
-}))
+app.use(
+  mongoSanitize({
+    replaceWith: "_",
+  })
+);
 
 const secret = process.env.SECRET || "thisshouldbeabettersecret";
 
@@ -55,17 +57,17 @@ const store = MongoStore.create({
   mongoUrl: dbUrl,
   touchAfter: 24 * 60 * 60,
   crypto: {
-      secret,
-  }
+    secret,
+  },
 });
 
-store.on("error", function(e) {
-  console.log("Session Store Error", e)
-})
+store.on("error", function (e) {
+  console.log("Session Store Error", e);
+});
 
 const sessionConfig = {
   store,
-  name: 'session',
+  name: "session",
   secret,
   resave: false,
   saveUninitialized: true,
@@ -78,16 +80,14 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
-
 const scriptSrcUrls = [
   "https://stackpath.bootstrapcdn.com",
-    "https://api.tiles.mapbox.com",
-    "https://api.mapbox.com",
-    "https://kit.fontawesome.com",
-    "https://cdnjs.cloudflare.com",
-    "https://cdn.jsdelivr.net",
-    "https://res.cloudinary.com/duatnktrs/"
-  
+  "https://api.tiles.mapbox.com",
+  "https://api.mapbox.com",
+  "https://kit.fontawesome.com",
+  "https://cdnjs.cloudflare.com",
+  "https://cdn.jsdelivr.net",
+  "https://res.cloudinary.com/duatnktrs/",
 ];
 const styleSrcUrls = [
   "https://kit-free.fontawesome.com",
@@ -97,37 +97,36 @@ const styleSrcUrls = [
   "https://fonts.googleapis.com",
   "https://use.fontawesome.com",
   "https://cdn.jsdelivr.net",
-  "https://res.cloudinary.com/duatnktrs/"
+  "https://res.cloudinary.com/duatnktrs/",
 ];
 const connectSrcUrls = [
   "https://api.mapbox.com",
   "https://*.tiles.mapbox.com",
   "https://events.mapbox.com",
-  "https://res.cloudinary.com/duatnktrs/"
+  "https://res.cloudinary.com/duatnktrs/",
 ];
 const fontSrcUrls = [];
 app.use(
   helmet.contentSecurityPolicy({
-      directives: {
-          defaultSrc: [],
-          connectSrc: ["'self'", ...connectSrcUrls],
-          scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
-          styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-          workerSrc: ["'self'", "blob:"],
-          childSrc: ["blob:"],
-          objectSrc: [],
-          imgSrc: [
-              "'self'",
-              "blob:",
-              "data:",
-              "https://res.cloudinary.com/duatnktrs/",
-              "https://images.unsplash.com",
-          ],
-          fontSrc: ["'self'", ...fontSrcUrls],
-      },
+    directives: {
+      defaultSrc: [],
+      connectSrc: ["'self'", ...connectSrcUrls],
+      scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+      styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+      workerSrc: ["'self'", "blob:"],
+      childSrc: ["blob:"],
+      objectSrc: [],
+      imgSrc: [
+        "'self'",
+        "blob:",
+        "data:",
+        "https://res.cloudinary.com/duatnktrs/",
+        "https://images.unsplash.com",
+      ],
+      fontSrc: ["'self'", ...fontSrcUrls],
+    },
   })
 );
-
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -163,5 +162,5 @@ app.use((err, req, res, next) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log("Serving on port 3000");
+  console.log(`Serving on port ${port}`);
 });
