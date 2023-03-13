@@ -35,6 +35,6 @@
     "sanitize-html": "^2.7.1",
     "xtend": "4.0.1",
     "yargs-parser": "21.1.1",
-    "wrappy": "1.0.1"
+    "wrappy": "1.0.0"
   }
 }
